@@ -2,6 +2,7 @@ use v6;
 class Graffiks::Mesh is repr('CStruct');
 
 use NativeCall;
+use Graffiks::Material;
 
 # these are the same as the mesh.c "mesh" struct
 # because we reperesent CStruct
@@ -22,6 +23,10 @@ sub _create_mesh(CArray, CArray, int32, CArray)
   returns Graffiks::Mesh
   is native("libgraffiks")
   is symbol('create_mesh') { * }
+
+sub _draw_mesh(Graffiks::Mesh, Graffiks::Material)
+  is native("libgraffiks")
+  is symbol("draw_mesh") { * }
 
 method new(@vertices, @faces, @normals) {
   my @Cvertices := CArray[CArray].new();
@@ -58,5 +63,22 @@ method new(@vertices, @faces, @normals) {
     }
   }
 
-  return _create_mesh(@Cvertices, @Cfaces, @Cfaces.elems, @Cnormals);
+  return _create_mesh(@Cvertices, @Cfaces, @faces.elems, @Cnormals);
+}
+
+method draw(Graffiks::Material $material) {
+  _draw_mesh(self, $material);
+}
+
+method set_location($x, $y, $z) {
+    $!location_x = num32.new($x);
+    $!location_y = num32.new($y);
+    $!location_z = num32.new($z);
+}
+
+method set_rotation($angle, $x, $y, $z) {
+    $!angle = num32.new($angle);
+    $!rot_x = num32.new($x);
+    $!rot_y = num32.new($y);
+    $!rot_z = num32.new($z);
 }
