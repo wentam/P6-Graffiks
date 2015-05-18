@@ -18,7 +18,10 @@ has num32 $.rot_x;
 has num32 $.rot_y;
 has num32 $.rot_z;
 
-sub _create_mesh(CArray, CArray, int32, CArray) returns Graffiks::Mesh is native("libgraffiks") is symbol('create_mesh') { * }
+sub _create_mesh(CArray, CArray, int32, CArray)
+  returns Graffiks::Mesh
+  is native("libgraffiks")
+  is symbol('create_mesh') { * }
 
 method new(@vertices, @faces, @normals) {
   my @Cvertices := CArray[CArray].new();
