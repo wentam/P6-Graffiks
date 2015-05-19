@@ -12,8 +12,10 @@ sub _init_linux(int32,int32,Str,
   is native("libgraffiks")
   is symbol("init_graffiks_xorg") { * }
 
-method new(:&init!, :&update!, :&draw!, :&finish,
-           :$window_width!, :$window_height!, :$window_title!) {
+method new(:&init, :&update, :&draw, :&finish,
+           :$window_width = 640,
+           :$window_height = 480,
+           :$window_title = "Graffiks") {
 
   _init_linux($window_width, $window_height, $window_title,
               &init, &update, &draw, &finish);
