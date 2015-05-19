@@ -44,15 +44,23 @@ method draw() {
     draw_object(self);
 }
 
-method set_location($x, $y, $z) {
+multi method set_location($x, $y, $z) {
     $!location_x = num32.new($x);
     $!location_y = num32.new($y);
     $!location_z = num32.new($z);
 }
 
-method set_rotation($angle, $x, $y, $z) {
+multi method set_location(:$x!, :$y!, :$z!) {
+  self.set_location($x, $y, $z);
+}
+
+multi method set_rotation($angle, $x, $y, $z) {
     $!angle = num32.new($angle);
     $!rot_x = num32.new($x);
     $!rot_y = num32.new($y);
     $!rot_z = num32.new($z);
+}
+
+multi method set_rotation(:$angle!, :$x!, :$y!, :$z!) {
+  self.set_rotation($angle, $x, $y, $z);
 }
