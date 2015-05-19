@@ -8,12 +8,12 @@ sub _init_linux(int32,int32,Str,
   &callback_update (num32),
   &callback_draw (),
   &callback_finish ())
-  
+
   is native("libgraffiks")
   is symbol("init_graffiks_xorg") { * }
 
-method new(&init, &update, &draw, &finish,
-           $window_width, $window_height, $window_title) {
+method new(:&init!, :&update!, :&draw!, :&finish,
+           :$window_width!, :$window_height!, :$window_title!) {
 
   _init_linux($window_width, $window_height, $window_title,
               &init, &update, &draw, &finish);
