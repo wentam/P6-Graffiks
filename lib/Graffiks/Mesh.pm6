@@ -5,7 +5,7 @@ use NativeCall;
 use Graffiks::Material;
 
 # these are the same as the mesh.c "mesh" struct
-# because we reperesent CStruct
+# because we represent CStruct
 has int32 $.triangle_buffer;
 has int32 $.normal_buffer;
 has int32 $.vertex_color_buffer;
@@ -23,10 +23,6 @@ sub _create_mesh(CArray, CArray, int32, CArray)
   returns Graffiks::Mesh
   is native("libgraffiks")
   is symbol('create_mesh') { * }
-
-sub _draw_mesh(Graffiks::Mesh, Graffiks::Material)
-  is native("libgraffiks")
-  is symbol("draw_mesh") { * }
 
 method new(@vertices, @faces, @normals) {
   my @Cvertices := CArray[CArray].new();
@@ -64,10 +60,6 @@ method new(@vertices, @faces, @normals) {
   }
 
   return _create_mesh(@Cvertices, @Cfaces, @faces.elems, @Cnormals);
-}
-
-method draw(Graffiks::Material $material) {
-  _draw_mesh(self, $material);
 }
 
 method set_location($x, $y, $z) {
