@@ -20,7 +20,7 @@ sub create_object(CArray, CArray, int32)
     returns Graffiks::Object
     is native("libgraffiks") { * }
 
-sub draw_object(Graffiks::Object) is native("libgraffiks") { * }
+sub draw_object_fw(Graffiks::Object) is native("libgraffiks") { * }
 
 method new (@meshes, @mats) {
   my @Cmeshes := CArray[Graffiks::Mesh].new();
@@ -41,7 +41,7 @@ method new (@meshes, @mats) {
 }
 
 method draw() {
-    draw_object(self);
+    draw_object_fw(self);
 }
 
 multi method set_location($x, $y, $z) {
