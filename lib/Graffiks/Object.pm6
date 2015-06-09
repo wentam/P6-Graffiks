@@ -73,8 +73,6 @@ method new (@meshes, @mats) {
     @Cmats[$i] = $mat;
   }
 
-  say @meshes.elems;
-
   return gfks_create_object(@Cmeshes, @Cmats, @meshes.elems);
 }
 

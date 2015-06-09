@@ -1,6 +1,6 @@
 use v6;
+#| Represents what a surface should look like
 unit class Graffiks::Material is repr('CStruct');
-
 use NativeCall;
 
 has Pointer $.program;

@@ -1,4 +1,5 @@
 use v6;
+#| Defines where you are looking at your scene from
 unit class Graffiks::Camera is repr('CStruct');
 
 use NativeCall;
@@ -64,22 +65,22 @@ submethod DESTROY {
   gfks_destroy_camera(self);
 }
 
-#= Makes this the active camera
+#| Makes this the active camera
 method make-active() {
   gfks_set_active_camera(self);
 }
 
-#= Sets the location of the camera
+#| Sets the location of the camera
 method set-location($x, $y, $z) {
   gfks_set_camera_location(self, num32.new($x), num32.new($y), num32.new($z));
 }
 
-#= Sets the camera target
+#| Sets the camera target
 method set-target($x, $y, $z) {
   gfks_set_camera_target(self, num32.new($x), num32.new($y), num32.new($z));
 }
 
-#= Rotates the camera
+#| Rotates the camera
 method rotate($x, $y, $z, $w) {
   gfks_rotate_camera(self, num32.new($x),
                            num32.new($y),
