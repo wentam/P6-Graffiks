@@ -1,5 +1,5 @@
 use v6;
-class Graffiks;
+unit class Graffiks;
 
 use NativeCall;
 

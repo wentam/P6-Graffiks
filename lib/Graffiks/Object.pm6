@@ -1,5 +1,5 @@
 use v6;
-class Graffiks::Object is repr('CStruct');
+unit class Graffiks::Object is repr('CStruct');
 
 use NativeCall;
 use Graffiks::Mesh;
@@ -20,7 +20,7 @@ sub gfks_create_object(CArray, CArray, int32)
     returns Graffiks::Object
     is native("libgraffiks") { * }
 
-sub gfks_remove_object(Graffiks::Object);
+sub gfks_remove_object(Graffiks::Object)
     is native("libgraffiks") { * }
 
 sub gfks_get_object_x(Graffiks::Object)
@@ -114,25 +114,25 @@ method hide() {
   gfks_hide_object(self);
 }
 
-multi method set_location($x, $y, $z) {
+multi method set-location($x, $y, $z) {
     $!location_x = num32.new($x);
     $!location_y = num32.new($y);
     $!location_z = num32.new($z);
 }
 
-multi method set_location(:$x!, :$y!, :$z!) {
-  self.set_location($x, $y, $z);
+multi method set-location(:$x!, :$y!, :$z!) {
+  self.set-location($x, $y, $z);
 }
 
-multi method set_rotation($angle, $x, $y, $z) {
+multi method set-rotation($angle, $x, $y, $z) {
     gfks_set_object_rotation(self, num32.new($angle),
                                    num32.new($x),
                                    num32.new($y),
                                    num32.new($z));
 }
 
-multi method set_rotation(:$angle!, :$x!, :$y!, :$z!) {
-  self.set_rotation($angle, $x, $y, $z);
+multi method set-rotation(:$angle!, :$x!, :$y!, :$z!) {
+  self.set-rotation($angle, $x, $y, $z);
 }
 
 submethod DESTROY {

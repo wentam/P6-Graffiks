@@ -1,5 +1,5 @@
 use v6;
-class Graffiks::Camera is repr('CStruct');
+unit class Graffiks::Camera is repr('CStruct');
 
 use NativeCall;
 
@@ -15,6 +15,9 @@ has num32 $.up_z;
 
 sub gfks_create_camera()
   returns Graffiks::Camera
+  is native("libgraffiks") { * }
+
+sub gfks_destroy_camera(Graffiks::Camera)
   is native("libgraffiks") { * }
 
 sub gfks_set_active_camera(Graffiks::Camera)
@@ -57,14 +60,43 @@ method new() {
   return gfks_create_camera();
 }
 
+submethod DESTROY {
+  gfks_destroy_camera(self);
+}
+
 #= Makes this the active camera
 method make-active() {
   gfks_set_active_camera(self);
 }
 
 #= Sets the location of the camera
-method set_location($x, $y, $z) {
+method set-location($x, $y, $z) {
   gfks_set_camera_location(self, num32.new($x), num32.new($y), num32.new($z));
+}
+
+#= Sets the camera target
+method set-target($x, $y, $z) {
+  gfks_set_camera_target(self, num32.new($x), num32.new($y), num32.new($z));
+}
+
+#= Rotates the camera
+method rotate($x, $y, $z, $w) {
+  gfks_rotate_camera(self, num32.new($x),
+                           num32.new($y),
+                           num32.new($z),
+                           num32.new($w));
+}
+
+method target-x() {
+  return gfks_get_camera_target_x(self);
+}
+
+method target-y() {
+  return gfks_get_camera_target_y(self);
+}
+
+method target-z() {
+  return gfks_get_camera_target_z(self);
 }
 
 method location-x() {

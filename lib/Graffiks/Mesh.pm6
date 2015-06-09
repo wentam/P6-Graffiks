@@ -1,5 +1,5 @@
 use v6;
-class Graffiks::Mesh is repr('CStruct');
+unit class Graffiks::Mesh is repr('CStruct');
 
 use NativeCall;
 use Graffiks::Material;
@@ -19,10 +19,16 @@ has num32 $.rot_x;
 has num32 $.rot_y;
 has num32 $.rot_z;
 
-sub _create_mesh(CArray, CArray, int32, CArray)
+sub gfks_create_mesh(CArray, CArray, int32, CArray)
   returns Graffiks::Mesh
-  is native("libgraffiks")
-  is symbol('create_mesh') { * }
+  is native("libgraffiks") { * }
+
+sub gfks_create_cube(num32)
+  returns Graffiks::Mesh
+  is native("libgraffiks") { * }
+
+sub gfks_free_mesh(Graffiks::Mesh)
+  is native("libgraffiks") { * }
 
 method new(@vertices, @faces, @normals) {
   my @Cvertices := CArray[CArray].new();
@@ -59,7 +65,15 @@ method new(@vertices, @faces, @normals) {
     }
   }
 
-  return _create_mesh(@Cvertices, @Cfaces, @faces.elems, @Cnormals);
+  return gfks_create_mesh(@Cvertices, @Cfaces, @faces.elems, @Cnormals);
+}
+
+method new-cube($scale) {
+  return gfks_create_cube(num32.new($scale));
+}
+
+submethod DESTROY {
+  gfks_free_mesh(self);
 }
 
 multi method set_location($x, $y, $z) {
