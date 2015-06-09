@@ -1,7 +1,7 @@
 # P6-Graffiks
 perl 6 bindings to [Graffiks](https://github.com/wentam/Graffiks)
 
-# Example usage
+## Example usage
 
 The following will create a spinning cube:
 
