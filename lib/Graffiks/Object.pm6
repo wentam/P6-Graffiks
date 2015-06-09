@@ -16,11 +16,49 @@ has num32 $.rot_x;
 has num32 $.rot_y;
 has num32 $.rot_z;
 
-sub create_object(CArray, CArray, int32)
+sub gfks_create_object(CArray, CArray, int32)
     returns Graffiks::Object
     is native("libgraffiks") { * }
 
-sub draw_object_fw(Graffiks::Object) is native("libgraffiks") { * }
+sub gfks_remove_object(Graffiks::Object);
+    is native("libgraffiks") { * }
+
+sub gfks_get_object_x(Graffiks::Object)
+    returns num32
+    is native("libgraffiks") { * }
+
+sub gfks_get_object_y(Graffiks::Object)
+    returns num32
+    is native("libgraffiks") { * }
+
+sub gfks_get_object_z(Graffiks::Object)
+    returns num32
+    is native("libgraffiks") { * }
+
+sub gfks_get_object_angle(Graffiks::Object)
+    returns num32
+    is native("libgraffiks") { * }
+
+sub gfks_get_object_angle_x(Graffiks::Object)
+    returns num32
+    is native("libgraffiks") { * }
+
+sub gfks_get_object_angle_y(Graffiks::Object)
+    returns num32
+    is native("libgraffiks") { * }
+
+sub gfks_get_object_angle_z(Graffiks::Object)
+    returns num32
+    is native("libgraffiks") { * }
+
+sub gfks_set_object_rotation(Graffiks::Object, num32, num32, num32, num32)
+    is native("libgraffiks") { * }
+
+sub gfks_hide_object(Graffiks::Object)
+    is native("libgraffiks") { * }
+
+sub gfks_show_object(Graffiks::Object)
+    is native("libgraffiks") { * }
 
 method new (@meshes, @mats) {
   my @Cmeshes := CArray[Graffiks::Mesh].new();
@@ -37,11 +75,43 @@ method new (@meshes, @mats) {
 
   say @meshes.elems;
 
-  return create_object(@Cmeshes, @Cmats, @meshes.elems);
+  return gfks_create_object(@Cmeshes, @Cmats, @meshes.elems);
 }
 
-method draw() {
-    draw_object_fw(self);
+method location-x() {
+  return gfks_get_object_x(self);
+}
+
+method location-y() {
+  return gfks_get_object_x(self);
+}
+
+method location-z() {
+  return gfks_get_object_x(self);
+}
+
+method angle-w() {
+  return gfks_get_object_angle(self);
+}
+
+method angle-x() {
+  return gfks_get_object_angle_x(self);
+}
+
+method angle-y() {
+  return gfks_get_object_angle_y(self);
+}
+
+method angle-z() {
+  return gfks_get_object_angle_z(self);
+}
+
+method show() {
+  gfks_show_object(self);
+}
+
+method hide() {
+  gfks_hide_object(self);
 }
 
 multi method set_location($x, $y, $z) {
@@ -55,12 +125,16 @@ multi method set_location(:$x!, :$y!, :$z!) {
 }
 
 multi method set_rotation($angle, $x, $y, $z) {
-    $!angle = num32.new($angle);
-    $!rot_x = num32.new($x);
-    $!rot_y = num32.new($y);
-    $!rot_z = num32.new($z);
+    gfks_set_object_rotation(self, num32.new($angle),
+                                   num32.new($x),
+                                   num32.new($y),
+                                   num32.new($z));
 }
 
 multi method set_rotation(:$angle!, :$x!, :$y!, :$z!) {
   self.set_rotation($angle, $x, $y, $z);
+}
+
+submethod DESTROY {
+  gfks_remove_object(self);
 }
