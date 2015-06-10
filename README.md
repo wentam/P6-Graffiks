@@ -23,7 +23,7 @@ sub init ($gfks, $window_width, $window_height) {
   # enable the deferred renderer
   $gfks.enable-renderers(:deferred);
 
-  # create, postion, and make our camera the active one
+  # create, position, and make our camera the active one
   my $camera = Graffiks::Camera.new();
   $camera.make-active();
   $camera.set-location(0,0,7);
