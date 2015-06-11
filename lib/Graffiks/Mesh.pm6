@@ -27,6 +27,14 @@ sub gfks_create_cube(num32)
   returns Graffiks::Mesh
   is native("libgraffiks") { * }
 
+sub gfks_create_plane(num32, num32)
+  returns Graffiks::Mesh
+  is native("libgraffiks") { * }
+
+sub gfks_create_triangle(num32)
+  returns Graffiks::Mesh
+  is native("libgraffiks") { * }
+
 sub gfks_free_mesh(Graffiks::Mesh)
   is native("libgraffiks") { * }
 
@@ -70,6 +78,14 @@ method new(@vertices, @faces, @normals) {
 
 method new-cube($scale) {
   return gfks_create_cube(num32.new($scale));
+}
+
+method new-plane($width, $height) {
+  return gfks_create_plane(num32.new($width), num32.new($height));
+}
+
+method new-triangle($scale) {
+  return gfks_create_triangle(num32.new($scale));
 }
 
 submethod DESTROY {
